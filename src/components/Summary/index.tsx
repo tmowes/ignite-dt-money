@@ -1,10 +1,15 @@
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react'
 import { useTheme } from 'styled-components'
 
+import { currencyBRLFormat } from '../../utils/currencyBRLFormat'
 import { SummaryCard, SummaryContainer } from './styles'
+import { useSummary } from './useSummary'
 
 export function Summary() {
   const theme = useTheme()
+
+  const { income, outcome, total } = useSummary()
+
   return (
     <SummaryContainer>
       <SummaryCard>
@@ -12,7 +17,7 @@ export function Summary() {
           <span>Entradas</span>
           <ArrowCircleUp size={32} color={theme['green-300']} />
         </header>
-        <strong>R$ 2.400,00</strong>
+        <strong>{currencyBRLFormat(income)}</strong>
       </SummaryCard>
 
       <SummaryCard>
@@ -20,7 +25,7 @@ export function Summary() {
           <span>Saídas</span>
           <ArrowCircleDown size={32} color={theme['red-300']} />
         </header>
-        <strong>R$ 1.400,00</strong>
+        <strong>{currencyBRLFormat(outcome)}</strong>
       </SummaryCard>
 
       <SummaryCard variant="green">
@@ -28,7 +33,7 @@ export function Summary() {
           <span>Total</span>
           <CurrencyDollar size={32} color={theme.white} />
         </header>
-        <strong>R$ 1.000,00</strong>
+        <strong>{currencyBRLFormat(total)}</strong>
       </SummaryCard>
     </SummaryContainer>
   )

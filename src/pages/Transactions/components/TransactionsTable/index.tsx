@@ -1,25 +1,27 @@
+import { useTransaction } from '../../../../contexts/TransactionProvider'
+import { currencyBRLFormat } from '../../../../utils/currencyBRLFormat'
+import { datePtBRFormatter } from '../../../../utils/datePtBRFormatter'
 import { TableContainer, PriceHighlight } from './styles'
 
 export function TransactionsTable() {
+  const { transactions } = useTransaction()
+
   return (
     <TableContainer>
       <tbody>
-        <tr>
-          <td width="50%">Desenvolvimento de site</td>
-          <td>
-            <PriceHighlight variant="income">R$ 2.000,00</PriceHighlight>
-          </td>
-          <td>Venda</td>
-          <td>13/08/2022</td>
-        </tr>
-        <tr>
-          <td width="50%">Hambúrguer</td>
-          <td>
-            <PriceHighlight variant="outcome">-R$ 59,00</PriceHighlight>
-          </td>
-          <td>Alimentação</td>
-          <td>10/08/2022</td>
-        </tr>
+        {transactions.map(({ id, description, type, price, category, createdAt }) => (
+          <tr key={id}>
+            <td width="50%">{description}</td>
+            <td>
+              <PriceHighlight variant={type}>
+                {type === 'outcome' && '- '}
+                {currencyBRLFormat(price)}
+              </PriceHighlight>
+            </td>
+            <td>{category}</td>
+            <td>{datePtBRFormatter(new Date(createdAt))}</td>
+          </tr>
+        ))}
       </tbody>
     </TableContainer>
   )
